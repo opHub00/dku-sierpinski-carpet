@@ -2,6 +2,7 @@
 
 var gl;
 var points = [];
+var NumTimesToSubdivide = 3;
 
 window.onload = function init()
 {
@@ -10,11 +11,7 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
 
-    // 1단계 동작 확인용: 사각형 하나만 그려본다
-    points = [
-        vec2( -0.5, -0.5 ), vec2(  0.5, -0.5 ), vec2( 0.5, 0.5 ),
-        vec2( -0.5, -0.5 ), vec2(  0.5,  0.5 ), vec2( -0.5, 0.5 )
-    ];
+     divideSquare( -0.9, -0.9, 1.8, NumTimesToSubdivide );
 
     gl.viewport( 0, 0, canvas.width, canvas.height );
     gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
@@ -33,6 +30,24 @@ window.onload = function init()
     render();
 };
 
+function divideSquare( x, y, size, count )
+{
+    if ( count === 0 ) {
+        // 더 안 쪼갠다 → 사각형 하나를 삼각형 2개로 저장
+        points.push( vec2(x, y),        vec2(x+size, y),      vec2(x+size, y+size) );
+        points.push( vec2(x, y),        vec2(x+size, y+size), vec2(x, y+size) );
+        return;
+    }
+
+    var s = size / 3;   // 작은 칸 한 변 길이
+
+    for ( var i = 0; i < 3; i++ ) {         // 가로 3칸
+        for ( var j = 0; j < 3; j++ ) {     // 세로 3칸
+            if ( i === 1 && j === 1 ) continue;   // 가운데 칸은 버린다
+            divideSquare( x + i*s, y + j*s, s, count - 1 );
+        }
+    }
+}
 function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT );
