@@ -18,6 +18,8 @@ window.onload = function init()
 
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
+    var uColorLoc = gl.getUniformLocation( program, "uColor" );
+    gl.uniform4f( uColorLoc, 1.0, 0.0, 0.0, 1.0 );
 
     var bufferId = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
@@ -34,6 +36,15 @@ window.onload = function init()
         points = [];
         divideSquare( -0.9, -0.9, 1.8, NumTimesToSubdivide );
         gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+        render();
+    };
+
+    document.getElementById( "color" ).oninput = function( event ) {
+        var hex = event.target.value;
+        var r = parseInt( hex.substr(1, 2), 16 ) / 255;
+        var g = parseInt( hex.substr(3, 2), 16 ) / 255;
+        var b = parseInt( hex.substr(5, 2), 16 ) / 255;
+        gl.uniform4f( uColorLoc, r, g, b, 1.0 );
         render();
     };
 
