@@ -2,7 +2,7 @@
 
 var gl;
 var points = [];
-var NumTimesToSubdivide = 2;
+var NumTimesToSubdivide = 4;
 
 window.onload = function init()
 {
