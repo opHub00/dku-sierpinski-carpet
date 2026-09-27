@@ -27,6 +27,16 @@ window.onload = function init()
     gl.vertexAttribPointer( vPosition, 2, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( vPosition );
 
+    document.getElementById( "depth" ).oninput = function( event ) {
+        NumTimesToSubdivide = parseInt( event.target.value );
+        document.getElementById( "depthValue" ).innerHTML = NumTimesToSubdivide; 
+
+        points = [];
+        divideSquare( -0.9, -0.9, 1.8, NumTimesToSubdivide );
+        gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+        render();
+    };
+
     render();
 };
 
