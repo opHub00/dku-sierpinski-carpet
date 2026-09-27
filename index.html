@@ -14,9 +14,10 @@ void main()
 
 <script id="fragment-shader" type="x-shader/x-fragment">
 precision mediump float;
+uniform vec4 uColor;
 void main()
 {
-    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+    gl_FragColor = uColor;
 }
 </script>
 
@@ -33,6 +34,9 @@ void main()
 <div>
     분할 횟수: <input id="depth" type="range" min="0" max="6" value="3">
     <span id="depthValue">3</span>
+</div>
+<div>
+    색상: <input id="color" type="color" value="#ff0000">
 </div>
 </body>
 </html>
